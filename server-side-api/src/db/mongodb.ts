@@ -7,8 +7,9 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-let url: string = 'mongodb://127.0.0.1:27017/local';
-// 'mongodb+srv://Velayuthamwd:YacAF3ctXYURXm9b@foodorderingapp.1zm14hp.mongodb.net/';
+let url: string =
+  /* 'mongodb://127.0.0.1:27017/local'; */
+  'mongodb+srv://Velayuthamwd:YacAF3ctXYURXm9b@cluster0.ilajf.mongodb.net/';
 
 // console.warn('process.env', process.env['NODE_ENV']);
 
