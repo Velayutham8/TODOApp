@@ -2,9 +2,9 @@
 
 # Instruction to start the local server
 
-1. open terminal on following path named (server-side-api)
-2. run the command 'npm i --save' and then 'tsc -w'
-3. open another terminal and run this command to start the server 'npm run server'
+1. Open terminal on following path named (server-side-api)
+2. Run the command 'npm i --save' and then 'tsc -w'
+3. Open another terminal and run this command to start the server 'npm run server'
 
 # Database
 
