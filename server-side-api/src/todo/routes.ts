@@ -11,6 +11,6 @@ router.post('/create', createRouter);
 router.get('/list', listRouter);
 router.get('/view', viewRouter);
 router.delete('/delete', deleteRouter);
-router.put('/update', updateRouter);
+router.post('/update', updateRouter);
 
 export default router;

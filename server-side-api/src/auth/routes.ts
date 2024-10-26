@@ -8,6 +8,6 @@ const router = express.Router();
 
 router.post('/signup', signupRouter);
 router.post('/signin', signinRouter);
-router.get('/refresh', extractToken, verifyToken, refreshRouter);
+router.get('/refresh', extractToken, refreshRouter);
 
 export default router;

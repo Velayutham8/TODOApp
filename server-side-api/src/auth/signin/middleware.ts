@@ -101,11 +101,12 @@ export const signin = async (
 
   const { accountid } = userdata;
 
-  const token = jwt.sign({ accountid }, 'tokensecret');
+  const token = jwt.sign({ accountid }, 'tokensecret', { expiresIn: 60 * 5 }); // 5 Minutes
 
   res.status(200).json({
     status: 200,
     token,
+    accountid,
   });
   return;
 };

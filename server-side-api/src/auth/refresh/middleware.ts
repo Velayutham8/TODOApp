@@ -1,10 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
-import { Db } from 'mongodb';
-import { getMongodb } from '../../db/mongodb';
-import * as uuid from 'uuid';
+import jwt from 'jsonwebtoken';
 import Joi from 'joi';
 import { validateObject } from '../../utils/utils';
-import { TODO_COLLECTION_NAME } from '../../utils/COLLECTIONS';
 
 export const reqDataValidation = async (
   req: Request,
@@ -14,7 +11,7 @@ export const reqDataValidation = async (
   const { reqdata } = res.locals;
 
   const schema = Joi.object({
-    todo: Joi.string().min(1).max(500).required(),
+    accountid: Joi.string().min(12).max(12).required(),
   });
 
   try {
@@ -28,29 +25,40 @@ export const reqDataValidation = async (
   return;
 };
 
-export const todoCreate = async (
+export const verifyTokenForRefresh = (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  const { reqdata, accountid } = res.locals;
+  const { token, reqdata } = res.locals;
 
-  const { todo } = reqdata;
+  let decoded: any;
 
-  const id = uuid.v4();
+  try {
 
-  const db: Db = await getMongodb();
+    decoded = jwt.verify(token, 'tokensecret');
+  } catch (error: any) {
+    const { accountid } = reqdata;
 
-  await db.collection(TODO_COLLECTION_NAME).insertOne({
-    id,
-    todo,
-    accountid,
-    createdat: new Date(),
-  });
+    //New token
+    const token = jwt.sign({ accountid }, 'tokensecret', { expiresIn: 60 * 5 }); // 5 Minutes
 
-  res.status(201).json({
-    status: 201,
-    data: 'Todo Created!',
-  });
+    console.log('error in token', { accountid, token });
+    res.status(200).json({
+      status: 200,
+      information: 'Token expired',
+      accountid,
+      newtoken: token,
+    });
+    return;
+  }
+
+  const { accountid } = decoded;
+
+  res
+    .status(200)
+    .json({ status: 200, information: 'Token Valid!...', accountid });
+
+  next();
   return;
 };

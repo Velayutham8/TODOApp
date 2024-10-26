@@ -1,8 +1,9 @@
 import express from 'express';
-import { reqDataValidation, todoCreate } from './middleware';
+import { verifyTokenForRefresh } from './middleware';
+import { extractToken } from '../../utils/utils';
 
 const router = express.Router();
 
-router.use(reqDataValidation, todoCreate);
+router.use(verifyTokenForRefresh);
 
 export default router;

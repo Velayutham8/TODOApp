@@ -23,6 +23,13 @@ export const extractToken = (
 ) => {
   const authHeader = req.headers.authorization as string;
 
+  if (!authHeader) {
+    res
+      .status(400)
+      .json({ status: 400, information: 'Token not found in headers' });
+    return;
+  }
+
   if (authHeader.startsWith('Bearer ')) {
     const token = authHeader.substring(7, authHeader.length);
 
@@ -31,7 +38,7 @@ export const extractToken = (
     return;
   } else {
     //Error
-    res.json({ status: 400, information: 'Token not found' });
+    res.status(400).json({ status: 400, information: 'Token not found' });
     return;
   }
 };
@@ -48,7 +55,7 @@ export const verifyToken = (
   try {
     decoded = jwt.verify(token, 'tokensecret');
   } catch (error: any) {
-    res.status(400).json({ status: 400, information: error.message });
+    res.status(400).json({ status: 400, information: 'Token expired' });
     return;
   }
 
